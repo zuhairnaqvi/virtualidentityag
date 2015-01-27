@@ -1,0 +1,21 @@
+{
+    "name": "virtualidentityag",
+    "type": "symfony-bundle",
+    "description": "TPSE Operator Bundle",
+    "keywords": ["Operator Details Bundle"],
+    "homepage": "http://comogroup.com.au/",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Como Technology Solutions",
+            "email": "all@comogroup.com.ay",
+            "homepage": "http://comogroup.com.au"
+        }
+    ],
+   
+    "extra": {
+        "branch-alias": {
+            "dev-master": "master"
+        }
+    }
+}
