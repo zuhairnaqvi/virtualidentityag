@@ -1,0 +1,32 @@
+{% extends 'VirtualIdentityAggregatorBundle::base.html.twig' %}
+
+{% block title %} synchronization{% endblock %}
+
+{% block body %}
+    <div id="content" class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <header>
+                    <h1>Aggregator synchroniziation</h1>
+                </header>
+            </div>
+            <div class="col-lg-4" style="padding-top: 2em">
+                {% include 'VirtualIdentityAggregatorBundle::nav.html.twig' with {'active': 'sync'} %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+
+                <section>
+                    <p>Synchronization done.</p>
+                    <p>
+                        <emph>Warning:</emph> Syncing over all social channels may cause errors
+                        on certain services if they are wrongly configured. Those errors are
+                        surpressed quietly! This means that allthough you see "Synchronization
+                        done" it might actually didn't have worked. :(
+                    </p>
+                </section>
+            </div>
+        </div>
+    </div>
+{% endblock %}

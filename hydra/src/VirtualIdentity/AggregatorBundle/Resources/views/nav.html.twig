@@ -1,0 +1,10 @@
+                <nav>
+                    <ul class="nav nav-pills" style="float: right">
+                        <li{% if active == 'moderate' %} class="active"{% endif %}>
+                            <a href="{{ path('virtual_identity_aggregator_moderate') }}">moderation</a>
+                        </li>
+                        <li class="{% if active == 'sync' %} active{% endif %}">
+                            <a href="{{ path('virtual_identity_aggregator_sync') }}">sync</a>
+                        </li>
+                    </ul>
+                </nav>

@@ -1,0 +1,49 @@
+{% extends 'VirtualIdentityYoutubeBundle::base.html.twig' %}
+
+{% block title %} moderation{% endblock %}
+
+{% block body %}
+            <div class="col-lg-8">
+                <header>
+                    <h1>Youtube moderation</h1>
+                </header>
+            </div>
+            <div class="col-lg-4" style="padding-top: 2em">
+                {% include 'VirtualIdentityYoutubeBundle::nav.html.twig' with {'active': 'moderate'} %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+
+                <section>
+                    Total youtubes: {{ feed.getTotalItemCount }}
+                    <div style="text-align: center">
+                        {{ knp_pagination_render(feed) }}
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th{% if feed.isSorted('a.snippetPublishedAt') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(feed, 'Published at', 'a.snippetPublishedAt') }}</th>
+                                <th{% if feed.isSorted('a.snippetResourceIdVideoId') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(feed, 'Video Id', 'a.snippetResourceIdVideoId') }}</th>
+                                <th{% if feed.isSorted('a.snippetTitle') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(feed, 'Title', 'a.snippetTitle') }}</th>
+                                <th{% if feed.isSorted('a.approved') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(feed, 'Approved', 'a.approved') }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            {% for youtube in feed %}
+                            <tr>
+                                <td>{{ youtube.snippetPublishedAt | date }}</td>
+                                <td>{{ youtube.snippetResourceIdVideoId }}</td>
+                                <td>{{ youtube.snippetTitle }}</td>
+                                <td><a href="{{ path('virtual_identity_youtube_moderate', {'youtubeId': youtube.id, 'approved': youtube.approved ? '0' : '1'}) }}">{{ youtube.approved ? '✔' : '✖' }}</a></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <div style="text-align: center">
+                        {{ knp_pagination_render(feed) }}
+                    </div>
+                </section>
+            </div>
+{% endblock %}

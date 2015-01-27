@@ -1,0 +1,49 @@
+{% extends 'VirtualIdentityFacebookBundle::base.html.twig' %}
+
+{% block title %} moderation{% endblock %}
+
+{% block body %}
+            <div class="col-lg-8">
+                <header>
+                    <h1>Facebook moderation</h1>
+                </header>
+            </div>
+            <div class="col-lg-4" style="padding-top: 2em">
+                {% include 'VirtualIdentityFacebookBundle::nav.html.twig' with {'active': 'moderate'} %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+
+                <section>
+                    Total facebooks: {{ feed.getTotalItemCount }}
+                    <div style="text-align: center">
+                        {{ knp_pagination_render(feed) }}
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th{% if feed.isSorted('a.createdTime') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(feed, 'Created', 'a.createdTime') }}</th>
+                                <th{% if feed.isSorted('a.fromName') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(feed, 'Facebook handle', 'a.fromName') }}</th>
+                                <th{% if feed.isSorted('a.message') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(feed, 'Facebook', 'a.message') }}</th>
+                                <th{% if feed.isSorted('a.approved') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(feed, 'Approved', 'a.approved') }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            {% for facebook in feed %}
+                            <tr>
+                                <td>{{ facebook.createdTime | date }}</td>
+                                <td>{{ facebook.fromName }}</td>
+                                <td>{{ facebook.message }}</td>
+                                <td><a href="{{ path('virtual_identity_facebook_moderate', {'facebookId': facebook.id, 'approved': facebook.approved ? '0' : '1'}) }}">{{ facebook.approved ? '✔' : '✖' }}</a></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <div style="text-align: center">
+                        {{ knp_pagination_render(feed) }}
+                    </div>
+                </section>
+            </div>
+{% endblock %}

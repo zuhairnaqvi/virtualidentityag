@@ -1,0 +1,20 @@
+parameters:
+    virtual_identity_youtube.api_requests: ~
+    virtual_identity_youtube.social_entity_class: ~
+    virtual_identity_youtube.auto_approve: ~
+    virtual_identity_youtube.consumer_key: ~
+    virtual_identity_youtube.consumer_secret: ~
+    virtual_identity_youtube.token: ~
+    virtual_identity_youtube.secret: ~
+    virtual_identity_youtube.host: ~
+
+services:
+    virtual_identity_youtube:
+        class: VirtualIdentity\YoutubeBundle\Services\YoutubeService
+        arguments: [@logger, @doctrine.orm.entity_manager, @event_dispatcher, @kernel]
+        calls:
+            - [setSocialEntityClass, ["%virtual_identity_youtube.social_entity_class%"]]
+            - [setAutoApprove, [%virtual_identity_youtube.auto_approve%]]
+            - [setHost, ["%virtual_identity_youtube.host%"]]
+            - [setAuthentication, ["%virtual_identity_youtube.consumer_key%", "%virtual_identity_youtube.consumer_secret%", "%virtual_identity_youtube.token%", "%virtual_identity_youtube.secret%"]]
+            - [setApiRequests, ["%virtual_identity_youtube.api_requests%"]]

@@ -1,0 +1,13 @@
+/***********
+* Approve Columns
+************/
+
+.col_approve a {
+    display: inline-block;
+    width: 20px;
+    text-align: center;
+}
+
+.col_approve a.active {
+    background-color: #DEDE90;
+}

@@ -1,0 +1,50 @@
+{% extends 'VirtualIdentityAggregatorBundle::base.html.twig' %}
+
+{% block title %} navigation{% endblock %}
+
+{% block head %}
+        <script>
+            (function($) {
+                var resizeFunction = function() {
+                    var height = $(window).height() - $('#hydra-nav').height() - 5;
+                    $('#social-service').css({
+                        height: height+'px'
+                    })
+                };
+                $(document).ready(function() {
+                    /* keep iframe in correct size */
+                    $(window).resize(resizeFunction);
+                    resizeFunction();
+
+                    /* switch navigation items */
+                    $('#hydra-nav a').click(function() {
+                        $(this).parents('ul').find('li').removeClass('active');
+                        $(this).parents('li').addClass('active');
+                    });
+                });
+            })(jQuery);
+        </script>
+{% endblock %}
+
+{% block body %}
+    <div id="content" class="container">
+        <div class="row">
+            <div class="col-lg-12" id="hydra-nav">
+                <header>
+                    <nav>
+                        <ul class="nav nav-tabs">
+                            <li class="active">
+                                <a href="{{ path('virtual_identity_twitter_moderate') }}" target="social-service">Twitter</a>
+                            </li>
+                            <li><a href="{{ path('virtual_identity_facebook_moderate') }}" target="social-service">Facebook</a></li>
+                            <li><a href="{{ path('virtual_identity_instagram_moderate') }}" target="social-service">Instagram</a></li>
+                            <li><a href="{{ path('virtual_identity_youtube_moderate') }}" target="social-service">Youtube</a></li>
+                            <li><a href="{{ path('virtual_identity_aggregator_moderate') }}" target="social-service">All Channels</a></li>
+                        </ul>
+                    </nav>
+                </header>
+            </div>
+        </div>
+    </div>
+    <iframe name="social-service" id="social-service" src="{{ path('virtual_identity_twitter_moderate') }}" style="width:100%;border:0" />
+{% endblock %}

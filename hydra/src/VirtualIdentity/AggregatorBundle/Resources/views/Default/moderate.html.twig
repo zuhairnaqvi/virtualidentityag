@@ -1,0 +1,69 @@
+{% extends 'VirtualIdentityAggregatorBundle::base.html.twig' %}
+
+{% block title %} moderation{% endblock %}
+
+{% block head %}
+        <script>
+            (function($) {
+                $(document).ready(function() {
+                    $('.preview-image-link').tooltip({'html':true});
+                });
+            })(jQuery);
+        </script>
+{% endblock %}
+
+{% block body %}
+    <div id="content" class="container" data-action="moderate">
+        <div class="row">
+            <div class="col-lg-8">
+                <header>
+                    <h1>All channels moderation</h1>
+                </header>
+            </div>
+            <div class="col-lg-4" style="padding-top: 2em">
+                {% include 'VirtualIdentityAggregatorBundle::nav.html.twig' with {'active': 'moderate'} %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+
+                <section>
+                    Total entries: {{ feed.getTotalItemCount }}
+                    <div style="text-align: center">
+                        {{ knp_pagination_render(feed) }}
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th{% if feed.isSorted('a.created') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(feed, 'Created', 'a.created') }}</th>
+                                <th{% if feed.isSorted('a.type') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(feed, 'Entity class name', 'a.type') }}</th>
+                                <th{% if feed.isSorted('a.text') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(feed, 'Text', 'a.text') }}</th>
+                                <th>Image</th>
+                                <th{% if feed.isSorted('a.approved') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(feed, 'Approved', 'a.approved') }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            {% for unified in feed %}
+                            <tr>
+                                <td>{{ unified.created | date }}</td>
+                                <td>{{ unified.type | split('\\') | last }}</td>
+                                <td>{{ unified.text }}</td>
+                                <td>{% if unified.imageUrl %}<a href="javascript://" class="preview-image-link" data-toggle="tooltip" title data-original-title="<img class='big-image' width='102px' src='{{ unified.imageUrl }}' />"><img class="preview-image" width="20px" src="{{ unified.imageUrl }}" /></a>{% endif %}</td>
+                                <td class="col_approve">
+                                    <a href="{{ path('virtual_identity_aggregator_update_approved', {'unifiedId': unified.id, 'approved': 1}) }}" {% if unified.approved == true %}class="active"{% endif %}>✔</a>
+                                    <a href="{{ path('virtual_identity_aggregator_update_approved', {'unifiedId': unified.id, 'approved': -1}) }}" {% if unified.approved is null %}class="active"{% endif %}>?</a>
+                                    <a href="{{ path('virtual_identity_aggregator_update_approved', {'unifiedId': unified.id, 'approved': false}) }}" {% if unified.approved is sameas(false) %}class="active"{% endif %}>✖</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <div style="text-align: center">
+                        {{ knp_pagination_render(feed) }}
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+{% endblock %}

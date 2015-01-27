@@ -1,0 +1,28 @@
+{
+    "name": "virtualidentityag/hydra-twitter",
+    "type": "library",
+    "description": "Twitter Feed Persistence Synchronizer - Part of virtualidentityag/hydra",
+    "keywords": ["twitter", "api"],
+    "homepage": "http://virtual-identity.com",
+    "license": "LGPL",
+    "authors": [
+        {
+            "name": "virtual-identity AG",
+            "homepage": "http://virtual-identity.com"
+        },
+        {
+            "name": "Matthias Steinböck",
+            "email": "matthias.steinboeck@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/symfony": "2.3.*",
+        "themattharris/tmhoauth": "0.8.*",
+        "knplabs/knp-paginator-bundle": "2.3.*",
+        "jms/serializer": "0.13.*"
+    },
+    "autoload": {
+        "psr-0": { "VirtualIdentity\\TwitterBundle": "src/" }
+    }
+}

@@ -1,0 +1,33 @@
+parameters:
+    virtual_identity_aggregator.unified_social_entity_class: ~
+    virtual_identity_aggregator.auto_approve: ~
+    virtual_identity_aggregator.harvested_services: ~
+
+services:
+    virtual_identity_aggregator_converter:
+        class: VirtualIdentity\AggregatorBundle\Services\AggregatorConverterService
+        arguments: [@logger, @doctrine.orm.entity_manager]
+    virtual_identity_aggregator_subscriber:
+        class: VirtualIdentity\AggregatorBundle\EventSubscriber\AggregatorApproveSubscriber
+        arguments: [@logger, @doctrine.orm.entity_manager, @virtual_identity_aggregator_converter]
+        calls:
+            - [setUnifiedSocialEntityClass, ["%virtual_identity_aggregator.unified_social_entity_class%"]]
+        tags:
+            - { name: kernel.event_listener, event: virtual_identity_twitter.post_approval_change, method: onApprovalChange }
+            - { name: kernel.event_listener, event: virtual_identity_instagram.post_approval_change, method: onApprovalChange }
+            - { name: kernel.event_listener, event: virtual_identity_facebook.post_approval_change, method: onApprovalChange }
+            - { name: kernel.event_listener, event: virtual_identity_youtube.post_approval_change, method: onApprovalChange }
+    virtual_identity_aggregator:
+        class: VirtualIdentity\AggregatorBundle\Services\AggregatorService
+        arguments: [@logger, @doctrine.orm.entity_manager, @virtual_identity_aggregator_converter]
+        calls:
+            - [setUnifiedSocialEntityClass, ["%virtual_identity_aggregator.unified_social_entity_class%"]]
+            - [setAutoApprove, [%virtual_identity_aggregator.auto_approve%]]
+            - [setHarvestedServices, [[@virtual_identity_twitter, @virtual_identity_instagram, @virtual_identity_facebook, @virtual_identity_youtube]]]
+    hydra_feed.twig.extension:
+        class: VirtualIdentity\AggregatorBundle\Twig\Extension\HydraTwigExtension
+        arguments:
+             converter: @virtual_identity_aggregator_converter
+        tags:
+            - { name: twig.extension }
+

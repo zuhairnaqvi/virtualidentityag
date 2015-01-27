@@ -1,0 +1,64 @@
+{% extends 'VirtualIdentityYoutubeBundle::base.html.twig' %}
+
+{% block title %} authorization{% endblock %}
+
+{% block head %}
+    <script>
+        (function($) {
+            var accessToken = '{{ accessToken }}';
+            var refreshToken = '{{ refreshToken }}';
+            var expiresIn = '{{ expiresIn }}';
+            jQuery(document).ready(function() {
+                jQuery(opener.document).find('#configurationEntity_token').val(accessToken);
+                $.ajax(
+                    '{{ path('virtual_identity_youtube_save_token_info') }}',
+                    {
+                        method: 'POST',
+                        data: {
+                            accessToken: accessToken,
+                            refreshToken: refreshToken,
+                            expiresIn: expiresIn
+                        }
+                    }
+                ).done(function() {
+                    window.close();
+                });
+            });
+        })(jQuery);
+    </script>
+{% endblock %}
+
+{% block body %}
+        <div class="col-lg-12">
+            <header>
+                <h1>Authorization successfull</h1>
+            </header>
+
+            <section>
+                Please wait until the refresh token is saved. This window should then be closed automatically!<br />
+                If something goes wrong, here are your credentials:<br />
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Token (access token)</td>
+                            <td>{{ accessToken }}</td>
+                        </tr>
+                        <tr>
+                            <td>Refresh Token</td>
+                            <td>{{ refreshToken }}</td>
+                        </tr>
+                        <tr>
+                            <td>Expires in (sec)</td>
+                            <td>{{ expiresIn }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </div>
+{% endblock %}

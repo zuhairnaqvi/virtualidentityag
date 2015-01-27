@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:fb="https://www.facebook.com/2008/fbml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>virtual-identity Hydra Facebook{% block title %}{% endblock %}</title>
+
+    {% stylesheets '@VirtualIdentityFacebookBundle/Resources/public/css/*' %}
+        <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+    {% javascripts
+        '@VirtualIdentityFacebookBundle/Resources/public/js/jquery-1.10.2.min.js'
+        '@VirtualIdentityFacebookBundle/Resources/public/js/bootstrap.min.js'
+    %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    {% block head %}{% endblock %}
+</head>
+
+<body>
+    <div id="fb-root"></div>
+    <div class="container">
+        <div class="row">
+            {% block body %}{% endblock %}
+        </div>
+    </div>
+</body>
+
+</html>

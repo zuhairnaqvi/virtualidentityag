@@ -1,0 +1,29 @@
+{
+    "name": "virtualidentityag/hydra",
+    "type": "library",
+    "description": "Social Media Feed Persistence Synchronizer",
+    "keywords": ["socialmedia", "social", "aggregator"],
+    "homepage": "http://virtual-identity.com",
+    "license": "LGPL",
+    "authors": [
+        {
+            "name": "virtual-identity AG",
+            "homepage": "http://virtual-identity.com"
+        },
+        {
+            "name": "Matthias Steinböck",
+            "email": "matthias.steinboeck@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/symfony": "2.3.*",
+        "virtualidentityag/hydra-twitter": "0.3.*",
+        "virtualidentityag/hydra-youtube": "0.3.*",
+        "virtualidentityag/hydra-facebook": "0.3.*",
+        "virtualidentityag/hydra-instagram": "0.3.*"
+    },
+    "autoload": {
+        "psr-0": { "VirtualIdentity\\AggregatorBundle": "src/" }
+    }
+}

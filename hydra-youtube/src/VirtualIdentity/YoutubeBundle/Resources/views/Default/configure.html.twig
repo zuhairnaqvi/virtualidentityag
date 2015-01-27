@@ -1,0 +1,132 @@
+{% extends 'VirtualIdentityYoutubeBundle::base.html.twig' %}
+
+{% block title %} configuration{% endblock %}
+
+{% block head %}
+    <script>
+        (function($) {
+
+            // keep track of how many email fields have been rendered
+            var apiRequestsCount = '{{ form.apiRequests | length }}';
+
+            $(document).ready(function() {
+                $('#add-another-api-request').click(function() {
+                    var apiRequestList = $('#api-requests-list');
+
+                    // grab the prototype template
+                    var newWidget = apiRequestList.attr('data-prototype');
+                    // replace the "__name__" used in the id and name of the prototype
+                    // with a number that's unique to your emails
+                    // end name attribute looks like name="contact[emails][2]"
+                    newWidget = newWidget.replace(/__name__/g, apiRequestsCount);
+                    apiRequestsCount++;
+
+                    // create a new list element and add it to the list
+                    var newLi = $('<li class="list-group-item"><div class="input-group"></div></li>');
+                    newLi.find('div').
+                        html(newWidget).
+                        append('<span class="input-group-addon"><a href="javascript://" onclick="jQuery(this).parents(\'li\').remove()">✘</a></span>');
+                    newLi.appendTo($('#api-requests-list'));
+
+                    return false;
+                });
+                $('#youtube-authorize').click(function() {
+                    window.open('{{ url('virtual_identity_youtube_authorize') }}', 'youtubeAuthorization', 'width=640,height=480,scrollbars=no,menubar=no,toolbar=no,status=no,location=no,resizable=yes');
+                    return false;
+                });
+            });
+        })(jQuery);
+    </script>
+{% endblock %}
+
+{% block body %}
+            <div class="col-lg-8">
+                <header>
+                    <h1>virtual-identity Hydra Youtube configuration</h1>
+                    <h3>Status:
+                    {% if credentialsValid %}
+                        <span class="label label-success">Credentials are valid</span>
+                    {% else %}
+                        <span class="label label-danger">Credentials are either incorrectly configured or not valid anymore</span>
+                    {% endif %}
+                    </h3>
+                </header>
+            </div>
+            <div class="col-lg-4" style="padding-top: 2em">
+                {% include 'VirtualIdentityYoutubeBundle::nav.html.twig' with {'active': 'configure', 'credentialsValid': credentialsValid} %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-8">
+
+                <section>
+                {{ form_start(form) }}
+                    <fieldset>
+
+                        {# store the prototype on the data-prototype attribute #}
+                        <ul id="api-requests-list" data-prototype="{{ form_widget(form.apiRequests.vars.prototype, {'attr': {'class': 'form-control'}}) | e }}" class="list-group">
+                            <li class="list-group-item">
+                                {{ form_label(form.apiRequests) }}
+                                <button type="button" class="btn btn-default btn-mini" id="add-another-api-request">Add API request URL</button>
+                            </li>
+                        {% for apiRequest in form.apiRequests %}
+                            <li class="list-group-item">
+                                <div class="input-group">
+                                    {{ form_errors(apiRequest) }}
+                                    {{ form_widget(apiRequest, {'attr': {'class': 'form-control'}}) }}
+                                    <span class="input-group-addon"><a href="javascript://" onclick="jQuery(this).parents('li').remove()">✘</a></span>
+                                </div>
+                            </li>
+                        {% endfor %}
+                        </ul>
+
+                        <div class="form-group">
+                            {{ form_errors(form.consumerKey) }}
+                            {{ form_label(form.consumerKey) }}
+                            {{ form_widget(form.consumerKey, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_errors(form.consumerSecret) }}
+                            {{ form_label(form.consumerSecret) }}
+                            {{ form_widget(form.consumerSecret, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_errors(form.token) }}
+                            {{ form_label(form.token) }}
+                            {{ form_widget(form.token, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+
+                        {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
+
+                        {% if form.consumerKey.vars.value is empty or form.consumerSecret.vars.value is empty %}
+                        Fill out consumer key and secret to get the Google sign-in button!
+                        {% else %}
+                        <button type="button" id="youtube-authorize" style="border:none;background:none"><img src="{{asset('bundles/virtualidentityyoutube/images/sign-in-with-google.png')}}" /></button>
+                        {% endif %}
+
+                    </fieldset>
+                {{ form_end(form) }}
+                </section>
+
+            </div>
+            <div class="col-lg-4">
+                <aside>
+                    <h3>Help</h3>
+                    <p>
+                        You can obtain the client id and secret from the clients management
+                        page from your Google APIs account: <a href="https://code.google.com/apis/console">https://code.google.com/apis/console</a>
+                    </p>
+                    <p>
+                        Be sure to fill out the "redirect uri" correctly. E.g. https://yourdomain.com/aggregator/app_dev.php/hydra/youtube/callbackurl<br />
+                        <emph>WARNING:</emph> Google only accepts valid domain names that are reachable! The only non-reachable
+                        domain name that is accepted is "localhost".
+                    </p>
+                    <p>
+                        After you filled those fields and saved the configuration you can press
+                        the "Sign in with Youtube" to obtain your access token.
+                    </p>
+                </aside>
+            </div>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'VirtualIdentityInstagramBundle::base.html.twig' %}
+
+{% block title %} moderation{% endblock %}
+
+{% block body %}
+            <div class="col-lg-8">
+                <header>
+                    <h1>Instagram moderation</h1>
+                </header>
+            </div>
+            <div class="col-lg-4" style="padding-top: 2em">
+                {% include 'VirtualIdentityInstagramBundle::nav.html.twig' with {'active': 'moderate'} %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+
+                <section>
+                    Total instagrams: {{ feed.getTotalItemCount }}
+                    <div style="text-align: center">
+                        {{ knp_pagination_render(feed) }}
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th{% if feed.isSorted('a.createdTime') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(feed, 'Created', 'a.createdTime') }}</th>
+                                <th{% if feed.isSorted('a.userUsername') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(feed, 'Instagram handle', 'a.userUsername') }}</th>
+                                <th{% if feed.isSorted('a.captionText') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(feed, 'Instagram', 'a.captionText') }}</th>
+                                <th{% if feed.isSorted('a.approved') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(feed, 'Approved', 'a.approved') }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            {% for instagram in feed %}
+                            <tr>
+                                <td>{{ instagram.createdTime | date }}</td>
+                                <td>{{ instagram.userUsername }}</td>
+                                <td>{{ instagram.captionText }}</td>
+                                <td><a href="{{ path('virtual_identity_instagram_moderate', {'instagramId': instagram.id, 'approved': instagram.approved ? '0' : '1'}) }}">{{ instagram.approved ? '✔' : '✖' }}</a></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <div style="text-align: center">
+                        {{ knp_pagination_render(feed) }}
+                    </div>
+                </section>
+            </div>
+{% endblock %}
