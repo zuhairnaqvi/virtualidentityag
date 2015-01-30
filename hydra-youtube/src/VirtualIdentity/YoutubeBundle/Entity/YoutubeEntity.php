@@ -295,4 +295,26 @@ class YoutubeEntity implements YoutubeEntityInterface
 
         return $this;
     }
+
+    public function getTitle() {
+        return $this->getSnippetTitle();
+    }
+
+    public function getBody() {
+        return $this->getSnippetDescription();
+    }
+
+    public function getMainImage()
+    {
+        return $this->getSnippetThumbnailsHighUrl();
+    }
+
+    public function getAuthor() {
+        return $this->getYoutubeId();
+    }
+
+    public function getTimestamp()
+    {
+        return $this->getSnippetPublishedAt();
+    }
 }

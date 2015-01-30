@@ -44,61 +44,61 @@ class YoutubeService
      * Logger used to log error and debug messages
      * @var Monolog\Logger
      */
-    protected $logger;
+    public $logger;
 
     /**
      * Entity Manager used to persist and load YoutubeEntities
      * @var Doctrine\ORM\EntityManager
      */
-    protected $em;
+    public $em;
 
     /**
      * The class name (fqcn) is used to persist youtube entities
      * @var String
      */
-    protected $socialEntityClass;
+    public $socialEntityClass;
 
     /**
      * If new entities should automatically be approved or not
      * @var boolean
      */
-    protected $autoApprove;
+    public $autoApprove;
 
     /**
      * The host used for communicating with the youtube api
      * @var String
      */
-    protected $host;
+    public $host;
 
     /**
      * The authentication credentials for connecting to the youtube api
      * @var array
      */
-    protected $authentication;
+    public $authentication;
 
     /**
      * The QueryBuilder used to query the youtube entities
      * @var Doctrine\ORM\QueryBuilder
      */
-    protected $qb;
+    public $qb;
 
     /**
      * The API-Requests that are used to retrieve the youtubes
      * @var array
      */
-    protected $apiRequests;
+    public $apiRequests;
 
     /**
      * The tmhOAuth Api
      * @var \tmhOAuth
      */
-    protected $api;
+    public $api;
 
     /**
      * an event dispatcher that is used to dispatch certain events, like when the approval status is changed
      * @var [type]
      */
-    protected $dispatcher;
+    public $dispatcher;
 
     /**
      * Creates a new Aggregator Service. The most important methods are the getFeed and syncDatabase methods.
@@ -538,7 +538,7 @@ class YoutubeService
      * @param  array  $dateFields fields that should be formatted as datetime object
      * @return YoutubeEntityInterface
      */
-    protected function deserializeRawObject($object, $dateFields = array())
+    public function deserializeRawObject($object, $dateFields = array())
     {
         // flatten object
         $object = self::flatten($object);
